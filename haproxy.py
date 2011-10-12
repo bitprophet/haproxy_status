@@ -25,7 +25,6 @@ class HaproxyStatusEntry(object):
         'active': 'act',
         'bytes_in': 'bin',
         'bytes_out': 'bout',
-        'http_requests': 'req_rate',
     }
 
     def __getattr__(self, name):
@@ -99,11 +98,25 @@ class HaproxyStatusEntry(object):
         return self.type == 'server'
 
     @property
+    def is_frontend(self):
+        return self.type == 'frontend'
+
+    @property
     def is_active(self):
         """
         Object is a server and is active ('act' == '1').
         """
         return self.is_server and self.active == '1'
+
+    @property
+    def http_requests(self):
+        """
+        Only frontends have any HTTP request stats.
+        """
+        if self.is_frontend:
+            return self.req_rate
+        raise ValueError, "Tried getting HTTP request stats from a non-frontend server entry!"
+
 
 
 def get_entries(socket_path):
