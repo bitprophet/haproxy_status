@@ -45,11 +45,20 @@ class HaproxyStatusEntry(object):
         return str(self.mapping)
 
     @property
+    def type(self):
+        return {
+            '0': 'frontend',
+            '1': 'backend',
+            '2': 'server',
+            '3': 'socket'
+        }[self.mapping['type']]
+
+    @property
     def is_server(self):
         """
         Is this object representing a proxied server?
         """
-        return self.name not in ('BACKEND', 'FRONTEND')
+        return self.type == 'server'
 
     @property
     def is_active(self):
@@ -110,7 +119,8 @@ def statuses(entries):
 if __name__ == "__main__":
     import pprint
     entries = get_entries(HAPROXY_STAT_SOCKET)
-    pprint.pprint(statuses(entries))
+    for entry in entries:
+        print entry.proxy, entry.name, entry.type
     print "Active statuses:"
     for entry in filter(lambda x: x.is_server, entries):
         print "%s => %s: %s" % (entry.proxy, entry.name, entry.is_active)
