@@ -37,7 +37,7 @@ def socket_to_dicts(socket_path):
 
 def statuses(dicts):
     """
-    Return mapping of the form $map['process']['server'] = 'STATUS'.
+    Return mapping of the form $map['proxy']['server'] = 'STATUS'.
 
     E.g. {'redis_cache_19201': {'cache10': 'UP', 'cache11': 'MAINT'}}
     """
