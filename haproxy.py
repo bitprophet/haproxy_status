@@ -45,11 +45,13 @@ def statuses(dicts):
     processes = defaultdict(dict)
     for d in dicts:
         processes[d['pxname']][d['svname']] = d['status']
-    return processes
+    # Cast back to vanilla dict for shits, giggles and better pprinting.
+    # (Not expecting clients to modify.)
+    return dict(processes)
 
 
 if __name__ == "__main__":
     import pprint
     dicts = socket_to_dicts(HAPROXY_STAT_SOCKET)
     pprint.pprint(dicts)
-    pprint.pprint(dict(statuses(dicts)))
+    pprint.pprint(statuses(dicts))
