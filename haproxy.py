@@ -44,10 +44,7 @@ def statuses(dicts):
     # 2-level dict
     processes = defaultdict(dict)
     for d in dicts:
-        proc = d['pxname']
-        server = d['svname']
-        status = d['status']
-        processes[proc][server] = status
+        processes[d['pxname']][d['svname']] = d['status']
     return processes
 
 
