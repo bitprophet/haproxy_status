@@ -111,14 +111,7 @@ def get_entries(socket_path):
     sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
     sock.connect(socket_path)
     sock.sendall("show stat\n")
-    # Why the fuck doesn't python stdlib have something for this bullshit.
-    # At least Ruby sockets let you just do .read() and BAM done.
-    result = ""
-    while True:
-        data = sock.recv(1024)
-        if not data:
-            break
-        result += data
+    result = sock.makefile().read()
 
     # Nuke header line's comment
     result = result.partition("# ")[2]
