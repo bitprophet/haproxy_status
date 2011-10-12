@@ -23,6 +23,9 @@ class HaproxyStatusEntry(object):
         'name': 'svname',
         'proxy': 'pxname',
         'active': 'act',
+        'bytes_in': 'bin',
+        'bytes_out': 'bout',
+        'http_requests': 'req_rate',
     }
 
     def __getattr__(self, name):
