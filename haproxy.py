@@ -152,7 +152,6 @@ def statuses(entries):
 
 
 if __name__ == "__main__":
-    import pprint
     entries = get_entries(HAPROXY_STAT_SOCKET)
     for entry in entries:
         print entry.proxy, entry.name, entry.type
