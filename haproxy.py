@@ -54,6 +54,41 @@ class HaproxyStatusEntry(object):
         }[self.mapping['type']]
 
     @property
+    def numeric_status(self):
+        """
+        Returns a (completely arbitrary!) integer representing state.
+
+        1: totally up
+        2: up, but transitioning to down
+        3: totally down
+        4: down, but transitioning to up
+        0: not being checked
+        -1: got something unknown
+        """
+        s = self.status
+        # Fully up
+        if s == 'UP':
+            return 1
+        # Currently up, but going down
+        # (should look like "UP (going down" ?)
+        elif s.startswith('UP'):
+            return 2
+        # Fully down
+        elif s == 'DOWN':
+            return 3
+        # Currently down, but coming up
+        # (should look like "DOWN (going up)" ?)
+        elif s.startswith('DOWN'):
+            return 4
+        # Not being checked == 'no check'?
+        # (This is only mentioned in a Ruby script; not in any docs.)
+        elif s == 'no check':
+            return 0
+        # Catchall
+        else:
+            return -1
+
+    @property
     def is_server(self):
         """
         Is this object representing a proxied server?
