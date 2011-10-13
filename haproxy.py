@@ -64,7 +64,8 @@ class HaproxyStatusEntry(object):
         2: up, but transitioning to down
         3: totally down
         4: down, but transitioning to up
-        0: not being checked
+        5: checked but disabled (MAINT)
+        0: not being checked at all
         -1: got something unknown
         """
         s = self.status
@@ -82,6 +83,8 @@ class HaproxyStatusEntry(object):
         # (should look like "DOWN (going up)" ?)
         elif s.startswith('DOWN'):
             return 4
+        elif s == "MAINT":
+            return 5
         # Not being checked == 'no check'?
         # (This is only mentioned in a Ruby script; not in any docs.)
         elif s == 'no check':
